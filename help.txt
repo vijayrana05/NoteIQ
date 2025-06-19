@@ -1,4 +1,0 @@
-justify centre  - centres children horizonatally
-items centre -  -----  --------------- verticlally
-padding - moves the content inside div wrt to the div in which it is used
-margin - moves the div itself wrt to parent div
