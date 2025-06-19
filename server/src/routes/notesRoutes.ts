@@ -19,7 +19,7 @@ router.post('/', verifyToken, async (req:any, res:any) => {
   if (!bedings) {
   return res.status(500).json({ error: "Failed to generate embeddings" });
 }
-  res.status(201).json(bedings);
+  res.status(201).json(newNote);
 });
 
 router.get('/', verifyToken, async (req, res) => {
