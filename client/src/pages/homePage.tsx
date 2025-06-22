@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { NewPost } from '../components/newpost';
 import { ShowPost } from '../components/showpost';
 import { notesAtom } from '../recoil/atoms';
+// import Testing from '../components/testing';
 
 
 
@@ -28,16 +29,20 @@ export function Home() {
 
         fetchNotes();
     }, [setNotes]);
-    
+
     return <>
         <div>
             <p>inside page of user id {userId}</p>
         </div>
         <div>
             <NewPost></NewPost>
-            {notes.map(note => (
-                <ShowPost key={note._id} title={note.title} content={note.content} />
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+                {notes.map((note) => (
+                    <ShowPost key={note._id} title={note.title} content={note.content} />
+                ))}
+            </div>
+
+            {/* <Testing></Testing> */}
         </div>
     </>
 

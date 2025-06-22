@@ -99,13 +99,13 @@ export async function createEmbeddings( yourText :any, noteId?: Types.ObjectId )
     
     const embeddings = await generateEmbeddings(yourText, 800);
     // yourText = `Your long text content goes here. This will be split into chunks of 800 characters each and processed through Google's text-embedding-004 model to generate embeddings.`
-    console.log('Generated embeddings:');
-    embeddings.forEach((result, index) => {
-      console.log(`Chunk ${index + 1}: ${result.chunk.substring(0, 50)}...`);
-      console.log(`Embedding dimensions: ${result.embedding.length}`);
-      console.log(`First 5 values: [${result.embedding.slice(0, 5).join(', ')}]`);
-      console.log('---');
-    });
+    // console.log('Generated embeddings:');
+    // embeddings.forEach((result, index) => {
+    //   console.log(`Chunk ${index + 1}: ${result.chunk.substring(0, 50)}...`);
+    //   console.log(`Embedding dimensions: ${result.embedding.length}`);
+    //   console.log(`First 5 values: [${result.embedding.slice(0, 5).join(', ')}]`);
+    //   console.log('---');
+    // });
     if(noteId){
       insertEmbeddings(embeddings,noteId)
     }

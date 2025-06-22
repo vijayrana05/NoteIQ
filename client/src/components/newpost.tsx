@@ -29,7 +29,7 @@ export function NewPost() {
             );
 
             SetNotes(prevNotes => [response.data, ...prevNotes]);
-            console.log("Note added:", response.data);
+            // console.log("Note added:", response.data);
             alert('Saved to DB!');
         } catch (err) {
             console.error('Error saving note', err);
