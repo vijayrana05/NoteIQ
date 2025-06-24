@@ -42,8 +42,6 @@ export function NewPost() {
 
             <TipTap onEditorContentSave={handleEditorContentSave} />
 
-
-
         </div>
     )
 }

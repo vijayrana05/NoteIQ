@@ -14,3 +14,8 @@ export const notesAtom = atom<Note[]>({
   key: 'notesAtom',
   default: [],
 });
+
+// export const openTipTapAtom = atom({
+//   key: "openTipTapAtom",
+//   default: false
+// })

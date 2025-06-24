@@ -41,7 +41,7 @@ export function TipTap({ onEditorContentSave }: TipTapProps) {
     const bodyJson: JSONContent = {
         type: "doc",
         content: remainingNodes,
-    };
+    }
 
     onEditorContentSave({ title: titleText, content: bodyJson });
 };
