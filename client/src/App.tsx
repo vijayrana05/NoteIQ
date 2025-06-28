@@ -4,6 +4,7 @@ import { Home } from "./pages/homePage";
 import { LandingPage } from "./pages/landingPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
+import EditorPage from "./pages/editorPage";
 // import NewPost from './components/newpost'
 function App(){
   return <>
@@ -14,6 +15,7 @@ function App(){
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/home/:userId' element = {<Home />} />
+          <Route path='/editor' element={<EditorPage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

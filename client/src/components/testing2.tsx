@@ -37,7 +37,7 @@ function GridLayout({ cards }: { cards: { title: string; content: string; color:
 // lg se jada screen to tb ye krio
 function SmallCard({ title, content, color }: { title: string; content: string; color: string }) {
   return (
-    <div className={`${color} relative text-black p-4 h-80 rounded-xl shadow-md w-full max-w-xs mx-auto`}>
+    <div className={`${color} relative text-black p-4 h-78 rounded-xl  w-full max-w-xs mx-auto`}>
       <p className="text-xs text-gray-600">27/06/25</p>
       <h3 className="text-xl pt-3 font-semibold mb-2">{title}</h3>
       <hr className="border-gray-600 my-2" />
