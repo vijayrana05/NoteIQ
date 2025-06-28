@@ -1,10 +1,11 @@
 import { NoteCard } from "../components/notecard";
 import { Test } from "../components/testing";
+import MainPage from "../components/testing2";
 
 export function LandingPage() {
-    return (<div className="bg-[rgb(13,17,23)] w-screen min-h-screen flex items-start justify-center p-4">
+    return (<div className=" ">
         
-            <Test></Test>
+            <MainPage></MainPage>
         
 
     </div>)
