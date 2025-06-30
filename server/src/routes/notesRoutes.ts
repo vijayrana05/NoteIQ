@@ -10,10 +10,10 @@ import { Types } from 'mongoose';
 const router = express.Router();
 
 router.post('/', verifyToken, async (req:any, res:any) => {
-  const { title, content } = req.body;
+  const { title, content,subject,color, } = req.body;
   const userId = (req as any).user.id;
   const plainText = tiptapJsonToPlainText(content);
-  const newNote = new Note({ title, content, owner: userId });
+  const newNote = new Note({ title, content, owner: userId,subject ,color });
   await newNote.save();
   const bedings = await createEmbeddings(plainText,newNote.id)
   if (!bedings) {

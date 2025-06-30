@@ -1,7 +1,4 @@
-import { useEditor, EditorContent, type JSONContent, type Editor } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
-import Underline from "@tiptap/extension-underline"
-import { FaBold, FaHeading } from "react-icons/fa6";
+import { FaBold } from "react-icons/fa6";
 import { FaItalic } from "react-icons/fa";
 import { FaUnderline } from "react-icons/fa";
 import { FaStrikethrough } from "react-icons/fa";
@@ -11,88 +8,13 @@ import { FaListOl } from "react-icons/fa"; // icon for ordered list
 import { LuHeading1 } from "react-icons/lu";
 import { LuHeading2 } from "react-icons/lu";
 import { LuHeading3 } from "react-icons/lu";
+import { FaCode } from "react-icons/fa6";
 import { FaRegSave } from "react-icons/fa";
-
-import { VscEdit } from "react-icons/vsc";
-
-
-
-import { FaCode } from "react-icons/fa";
-
-import '../App.css';
-import SideBar from "./ui/sideBar";
-
-
-const extensions = [
-    StarterKit,
-    Underline
-    // ✅ this fixes your issue
-];
-
-const content = `Title`
-
-function SideCard() {
-    return (
-        <div className={"bg-white relative text-black p-4 h-58 rounded-xl shadow-md  max-w-64 mx-auto"}>
-            <p className="text-xs text-gray-600">27/06/25</p>
-            <h3 className="text-xl pt-1 font-semibold mb-2">AI </h3>
-            <hr className="border-gray-600 my-2" />
-            <p className="text-black font-sans text-sm leading-normal line-clamp-4">this is ai note this i this is ai note this i this is ai note this i this is ai note this ithis is ai note this i this is ai note this iv this is ai note this i  this is ai note this i</p>
-            <p className="text-xs absolute bottom-6 left-4 right-16 line-clamp-2 text-gray-800">
-                subject — Artificial Intelligence
-            </p>
-            <div className="bg-[rgb(21,21,21)] rounded-full w-6 h-6 flex justify-center items-center absolute bottom-4 right-4">
-                <VscEdit className="text-white text-lg" />
-
-            </div>
-        </div>
-    );
-
-}
-
-
-export function Testing() {
-    const editor = useEditor({
-        extensions,
-        content
-    })
-    if (!editor) {
-        return null;
-    }
-    return (
-
-        <div className="flex">
-            <div className=" min-h-screen  hidden min-w-25 lg:block">
-                <SideBar />
-            </div>
-            <div className="bg-[rgb(247,247,247)] hidden lg:block min-h-screen min-w-78 ">
-                <div className="p-5 px-7 pt-14 space-y-6">
-                    <SideCard />
-                    <SideCard />
-                    <SideCard />
-                    <SideCard />
-                </div>
-            </div>
-            <div className=" max-w-5xl w-full p-2 rounded-lg shadow-md">
-                {/* <div>hello</div> */}
-
-
-                <Toolbar editor={editor} />
-
-                <div className=" rounded-lg   mt-6 ">
-                    <EditorContent editor={editor} className="tiptap min-h-130 pl-10  pt-3 cursor-white  overflow-y-scroll " />
-                </div>
+import { type Editor } from "@tiptap/react";
 
 
 
-                <button className="bg-blue-400" >Save</button>
-            </div>
-        </div>
-    )
-}
-
-
-function Toolbar({ editor }: { editor: Editor }) {
+function Toolbar({ editor, setModalOpen }: { editor: Editor; setModalOpen: any }) {
     return (
         <div className=" w-full flex justify-center flex-wrap  border-3 rounded-lg p-3 gap-3 ">
 
@@ -227,10 +149,14 @@ function Toolbar({ editor }: { editor: Editor }) {
             >
                 <FaListOl />
             </button>
-            <button className="w-10 h-10 text-xl flex items-center justify-center rounded transition  hover:bg-gray-300">
+            <button className="w-10 h-10 text-xl flex items-center justify-center rounded transition  hover:bg-gray-300" onClick={() => {
+                setModalOpen(true)
+            }}>
                 <FaRegSave />
             </button>
         </div>
     );
 }
 
+
+export default Toolbar;

@@ -8,7 +8,15 @@ const noteSchema = new mongoose.Schema({
     required: true,
   },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  subject : String,
+  color: String,
+  fav: {
+    type: Boolean,
+    default: false
+  },
+  
 },
+
   { timestamps: true });
 
 export default mongoose.model('Note', noteSchema);
