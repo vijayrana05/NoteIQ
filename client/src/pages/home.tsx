@@ -51,7 +51,7 @@ function GridLayout() {
       <div className="lg:ml-36 px-4 pt-1">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 border-t-3 pt-4  border-gray-300 w-fit">
           {notes.map((card:any) => (
-            <NoteCard key={card._id} title={card.title} content={card.content} subject={card.subject} color={card.color}  fav={card.fav} createdAt={card.createdAt} updatedAt={card.updatedAt}  />
+            <NoteCard noteId={card._id} title={card.title} content={card.content} subject={card.subject} color={card.color}  fav={card.fav} createdAt={card.createdAt} updatedAt={card.updatedAt}  />
           ))}
         </div>
       </div>

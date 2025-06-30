@@ -9,6 +9,7 @@ import { Types } from 'mongoose';
 
 const router = express.Router();
 
+// create a new note
 router.post('/', verifyToken, async (req:any, res:any) => {
   const { title, content,subject,color, } = req.body;
   const userId = (req as any).user.id;
@@ -22,6 +23,7 @@ router.post('/', verifyToken, async (req:any, res:any) => {
   res.status(201).json(newNote);
 });
 
+// get all notes
 router.get('/', verifyToken, async (req, res) => {
   const userId = (req as any).user.id;
   const notes = await Note.find({ owner: userId });
@@ -51,6 +53,30 @@ router.put('/:id', verifyToken, async (req: Request, res: Response): Promise<voi
     res.json(updatedNote);
   } catch (err) {
     res.status(500).json({ error: 'Failed to update note' });
+  }
+});
+
+// add and remove from fav
+router.patch("/:id", verifyToken, async (req:Request, res:Response): Promise<void> => {
+  const noteId = req.params.id;
+  const { fav } = req.body;
+
+  try {
+    const updatedNote = await Note.findByIdAndUpdate(
+      noteId,
+      { fav },
+      { new: true } // return the updated document
+    );
+
+    if (!updatedNote) {
+      res.status(404).json({ message: "Note not found" });
+      return;
+    }
+
+    res.json(updatedNote);
+  } catch (error) {
+    console.error("Failed to update fav:", error);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
