@@ -40,4 +40,5 @@ export const useNoteStore = create<NoteStore>((set) => ({
       console.error('Error saving note', err);
     }
   },
+  
 }));

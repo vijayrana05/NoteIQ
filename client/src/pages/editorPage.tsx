@@ -1,13 +1,15 @@
-import { useEditor, EditorContent, type JSONContent} from "@tiptap/react"
+import { useEditor, EditorContent, type JSONContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import SideBar from "../components/ui/sideBar";
 
 import Toolbar from "../components/ui/toolbar";
 import { useState } from "react";
-import { useNoteStore } from "../store/newNote";
+import { useNotesStore } from "../store/notesStore";
 import Modal from "../components/ui/Modal";
 import SideCard from "../components/ui/sidecard";
+import { useLocation } from "react-router-dom";
+
 import '../App.css'
 const extensions = [
     StarterKit,
@@ -16,14 +18,17 @@ const extensions = [
 ];
 
 
-const content = `Title`
 export function EditorPage() {
+    const location = useLocation();
+    const { _id,content,subject } = location.state || { content: { type: "doc", content: [] } };
+  
     const [isModalOpen, setModalOpen] = useState(false);
-    const addNote = useNoteStore((state) => state.addNote); // ✅ get addNote from store
+    const addNote = useNotesStore((state) => state.addNote); // ✅ get addNote from store
+    const updateNote = useNotesStore((state) => state.updateNote)
 
     const editor = useEditor({
         extensions,
-        content
+        content: content,
     })
     if (!editor) {
         return null;
@@ -56,7 +61,7 @@ export function EditorPage() {
                 <Modal
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
-                    subject="Save Note Preview"
+                    subject={subject}
                     onSave={(subject, color) => {
                         const fullJson = editor.getJSON();
                         const nodes = fullJson.content || [];
@@ -71,14 +76,30 @@ export function EditorPage() {
                             type: "doc",
                             content: isTitle ? nodes.slice(1) : nodes,
                         };
-
+                        if(_id) {
+                            updateNote({
+                                _id,
+                                title:titleText,
+                                content:bodyJson,
+                                subject,
+                                color,
+                                fav:false
+                            });
+                        }
+                        else {
                         addNote({
                             title: titleText,
                             content: bodyJson,
                             subject,
                             color,
                         });
+                    }
                     }}
+                    id = {_id} 
+                    
+                    
+                    
+
                 />
 
             </div>

@@ -1,6 +1,7 @@
 import { VscEdit } from "react-icons/vsc";
 
 function SideCard() {
+    
     return (
         <div className={"bg-white relative text-black p-4 h-58 rounded-xl shadow-md  max-w-64 mx-auto"}>
             <p className="text-xs text-gray-600">27/06/25</p>

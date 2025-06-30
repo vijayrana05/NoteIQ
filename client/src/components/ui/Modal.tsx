@@ -5,9 +5,20 @@ interface ModalProps {
     onClose: () => void;
     subject: string;
     onSave: (subject: string, color: string) => void;
+    id:string | undefined
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, subject, onSave }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, subject, onSave ,id}) => {
+    if(!id) {
+        subject = "Preview Note Subject"
+    }
+    const allowedColors = [
+        "rgb(254, 201, 113)",  // yellowish
+        "rgb(254, 155, 114)",  // brownish
+        "rgb(221, 232, 140)",  // greenish
+        "rgb(182, 147, 253)",  // purple
+        "rgb(0, 212, 254)",    // blue
+    ];
     const [noteSubject, setNoteSubject] = useState(subject);
     const [noteColor, setNoteColor] = useState("#3b82f6");
 
@@ -32,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, subject, onSave }) => {
                     />
                 </div>
 
-                <div className="flex flex-col space-y-2">
+                {/* <div className="flex flex-col space-y-2">
                     <label className="text-sm font-medium text-gray-700">Select Color</label>
                     <input
                         type="color"
@@ -40,8 +51,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, subject, onSave }) => {
                         onChange={(e) => setNoteColor(e.target.value)}
                         className="w-16 h-10 border border-gray-300 rounded"
                     />
+                </div> */}
+                <div className="flex flex-col space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Select Color</label>
+                    <div className="flex gap-3">
+                        {allowedColors.map((color) => (
+                            <button
+                                key={color}
+                                type="button"
+                                onClick={() => setNoteColor(color)}
+                                className={`w-10 h-10 rounded-full border-2 ${noteColor === color ? "ring-2 ring-black" : "border-gray-300"
+                                    }`}
+                                style={{ backgroundColor: color }}
+                            />
+                        ))}
+                    </div>
                 </div>
-
                 <button
                     className="w-full mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
                     onClick={() => {

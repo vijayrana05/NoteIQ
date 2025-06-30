@@ -32,7 +32,7 @@ router.get('/', verifyToken, async (req, res) => {
 
 // Update a note
 router.put('/:id', verifyToken, async (req: Request, res: Response): Promise<void> =>{
-  const { title, content } = req.body;
+  const { title, content , subject,color } = req.body;
   const userId = (req as any).user.id;
   const noteId = new Types.ObjectId(req.params.id);
 
@@ -40,7 +40,7 @@ router.put('/:id', verifyToken, async (req: Request, res: Response): Promise<voi
   try {
     const updatedNote = await Note.findOneAndUpdate(
       { _id: noteId, owner: userId }, // Ensure user owns the note
-      { title, content },
+      { title, content,subject,color },
       { new: true }
     );
 
