@@ -2,13 +2,14 @@ import { useEditor, EditorContent, type JSONContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import SideBar from "../components/ui/sideBar";
-
+import { useEffect } from "react";
 import Toolbar from "../components/ui/toolbar";
 import { useState } from "react";
 import { useNotesStore } from "../store/notesStore";
 import Modal from "../components/ui/Modal";
 import SideCard from "../components/ui/sidecard";
 import { useLocation } from "react-router-dom";
+import { useRef } from "react";
 
 import '../App.css'
 const extensions = [
@@ -20,11 +21,29 @@ const extensions = [
 
 export function EditorPage() {
     const location = useLocation();
-    const { _id,content,subject } = location.state || { content: { type: "doc", content: [] } };
-  
+    const { _id, content, subject } = location.state || { content: { type: "doc", content: [] } };
+    let hasInitializedContent = useRef(false);
+    console.log(subject)
+    const sideCardSelected = location.state;
+    if(sideCardSelected) {
+        hasInitializedContent.current = false
+    }
+
     const [isModalOpen, setModalOpen] = useState(false);
     const addNote = useNotesStore((state) => state.addNote); // ✅ get addNote from store
     const updateNote = useNotesStore((state) => state.updateNote)
+    const notes = useNotesStore((state) => state.notes);
+    // console.log("notes length inside editorPAge is = ", notes.length)
+    // console.log("rendedring")
+    const fetchNotes = useNotesStore((state) => state.fetchNotes)
+    useEffect(() => {
+        if (notes.length === 0) {
+            fetchNotes();
+            // console.log("fetchnotes runs inside editor page", notes.length)
+            // console.log("fetchnotes occured")
+        }
+        // console.log("isnide fetchnotes use effect")
+    }, [notes.length, fetchNotes]);
 
     const editor = useEditor({
         extensions,
@@ -34,7 +53,13 @@ export function EditorPage() {
         return null;
     }
 
-
+    useEffect(() => {
+        if (editor && content && !hasInitializedContent.current) {
+            editor.commands.setContent(content);
+            hasInitializedContent.current = true;
+            // console.log("initial content set");
+        }
+    }, [editor, content]);
     return (<div>
         <div className="flex">
             <div className=" border-r-2 border-gray-200  min-h-screen   hidden min-w-25 lg:block">
@@ -42,10 +67,9 @@ export function EditorPage() {
             </div>
             <div className="bg-[rgb(247,247,247)] hidden lg:block min-h-screen min-w-78 ">
                 <div className="p-5 px-7 pt-14 space-y-6">
-                    <SideCard />
-                    <SideCard />
-                    <SideCard />
-                    <SideCard />
+                    {notes.map((card: any) => (
+                        <SideCard key={card._id} noteId={card._id} title={card.title} content={card.content} subject={card.subject} color={card.color} fav={card.fav} createdAt={card.createdAt} updatedAt={card.updatedAt} />
+                    ))}
                 </div>
             </div>
             <div className=" max-w-5xl w-full p-2 rounded-lg shadow-md">
@@ -76,29 +100,29 @@ export function EditorPage() {
                             type: "doc",
                             content: isTitle ? nodes.slice(1) : nodes,
                         };
-                        if(_id) {
+                        if (_id) {
                             updateNote({
                                 _id,
-                                title:titleText,
-                                content:bodyJson,
+                                title: titleText,
+                                content: bodyJson,
                                 subject,
                                 color,
-                                fav:false
+                                fav: false
                             });
                         }
                         else {
-                        addNote({
-                            title: titleText,
-                            content: bodyJson,
-                            subject,
-                            color,
-                        });
-                    }
+                            addNote({
+                                title: titleText,
+                                content: bodyJson,
+                                subject,
+                                color,
+                            });
+                        }
                     }}
-                    id = {_id} 
-                    
-                    
-                    
+                    id={_id}
+
+
+
 
                 />
 

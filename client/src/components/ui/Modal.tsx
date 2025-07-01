@@ -1,17 +1,17 @@
-import { useState } from "react";
-
+import { useState} from "react";
 interface ModalProps {
     isOpen: boolean;
+    subject:string
     onClose: () => void;
-    subject: string;
     onSave: (subject: string, color: string) => void;
     id:string | undefined
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, subject, onSave ,id}) => {
-    if(!id) {
-        subject = "Preview Note Subject"
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave ,subject,id}) => {
+    if(!id){
+        subject = "Preview notes here"
     }
+
     const allowedColors = [
         "rgb(254, 201, 113)",  // yellowish
         "rgb(254, 155, 114)",  // brownish
@@ -19,8 +19,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, subject, onSave ,id}) =>
         "rgb(182, 147, 253)",  // purple
         "rgb(0, 212, 254)",    // blue
     ];
-    const [noteSubject, setNoteSubject] = useState(subject);
     const [noteColor, setNoteColor] = useState("#3b82f6");
+    const [noteSubject, setNoteSubject] = useState(subject);
 
     if (!isOpen) return null;
 

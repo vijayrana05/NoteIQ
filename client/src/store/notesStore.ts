@@ -26,10 +26,16 @@ type NotesState = {
   fetchNotes: () => Promise<void>;
   addNote: (note: NewNote) => Promise<void>;
   updateNote: (note: Note) => Promise<void>; // 👈 Add this
+  subject: string
+  setSubject: (subject: string) => void;
+
 };
 
 export const useNotesStore = create<NotesState>((set) => ({
   notes: [],
+  subject: "",
+  setSubject: (subject: string) => set({ subject }),
+
   fetchNotes: async () => {
     try {
       const token = localStorage.getItem("authToken");

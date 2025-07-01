@@ -35,6 +35,8 @@ router.put('/:id', verifyToken, async (req: Request, res: Response): Promise<voi
   const { title, content , subject,color } = req.body;
   const userId = (req as any).user.id;
   const noteId = new Types.ObjectId(req.params.id);
+  const plainText = tiptapJsonToPlainText(content);
+
 
 
   try {
@@ -48,7 +50,7 @@ router.put('/:id', verifyToken, async (req: Request, res: Response): Promise<voi
       res.status(404).json({ error: 'Note not found or unauthorized' });
       return;
     }
-    createEmbeddings(content,noteId)
+    await createEmbeddings(plainText,noteId)
 
     res.json(updatedNote);
   } catch (err) {

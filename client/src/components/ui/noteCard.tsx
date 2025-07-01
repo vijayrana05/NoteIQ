@@ -6,16 +6,18 @@ import Underline from "@tiptap/extension-underline";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useNotesStore } from "../../store/notesStore";
 
 function NoteCard({ noteId, title, content, subject, color, fav, createdAt, updatedAt }: { noteId: string; title: string; content: JSONContent; subject: string; color: string; fav: boolean; createdAt: string; updatedAt: string }) {
   const [isFav, SetisFav] = useState(fav)
+  const notes = useNotesStore((state) => state.notes);
+  // console.log("notes lenghth inside notecard is = ",notes.length)
   const html = generateHTML(content, [StarterKit, Underline])
   const navigate = useNavigate();
   const toggleFav = async () => {
     try {
       const token = localStorage.getItem("authToken");
       const newFav = !isFav;
-
       // Optimistic update
       SetisFav(newFav);
 
@@ -54,8 +56,9 @@ function NoteCard({ noteId, title, content, subject, color, fav, createdAt, upda
       <div className="bg-[rgb(21,21,21)] rounded-full w-10 h-10 flex justify-center items-center absolute bottom-4 right-4">
         <VscEdit
           className="text-white text-lg"
-          onClick={() =>
+          onClick={() =>{
             navigate("/editor", {
+            
               state: {
                 _id:noteId,
                 subject:subject,
@@ -72,6 +75,7 @@ function NoteCard({ noteId, title, content, subject, color, fav, createdAt, upda
                 },
               },
             })
+          }
           }
         />
       </div>
