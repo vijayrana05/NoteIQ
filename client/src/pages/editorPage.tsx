@@ -23,11 +23,17 @@ export function EditorPage() {
     const location = useLocation();
     const { _id, content, subject } = location.state || { content: { type: "doc", content: [] } };
     let hasInitializedContent = useRef(false);
-    console.log(subject)
+    // console.log(subject)
     const sideCardSelected = location.state;
-    if(sideCardSelected) {
+    if (sideCardSelected) {
         hasInitializedContent.current = false
     }
+    const setSubject = useNotesStore((state) => state.setSubject);
+    useEffect(() => {
+        if (subject) {
+            setSubject(subject); // Keep the store in sync with the editor note
+        }
+    }, [subject]);
 
     const [isModalOpen, setModalOpen] = useState(false);
     const addNote = useNotesStore((state) => state.addNote); // ✅ get addNote from store
@@ -35,11 +41,13 @@ export function EditorPage() {
     const notes = useNotesStore((state) => state.notes);
     // console.log("notes length inside editorPAge is = ", notes.length)
     // console.log("rendedring")
+    // console.log(subject)
+    console.log("rendered")
     const fetchNotes = useNotesStore((state) => state.fetchNotes)
     useEffect(() => {
         if (notes.length === 0) {
             fetchNotes();
-            // console.log("fetchnotes runs inside editor page", notes.length)
+            console.log("fetchnotes runs inside editor page", notes.length)
             // console.log("fetchnotes occured")
         }
         // console.log("isnide fetchnotes use effect")
@@ -57,7 +65,7 @@ export function EditorPage() {
         if (editor && content && !hasInitializedContent.current) {
             editor.commands.setContent(content);
             hasInitializedContent.current = true;
-            // console.log("initial content set");
+            console.log("initial content set");
         }
     }, [editor, content]);
     return (<div>
@@ -85,7 +93,6 @@ export function EditorPage() {
                 <Modal
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
-                    subject={subject}
                     onSave={(subject, color) => {
                         const fullJson = editor.getJSON();
                         const nodes = fullJson.content || [];

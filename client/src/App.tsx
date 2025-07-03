@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RecoilRoot } from "recoil";
 import EditorPage from "./pages/editorPage";
 import { Main } from "./pages/home";
+import EditorPageTesting from "./pages/testing";
 function App(){
   return <>
     <RecoilRoot>
@@ -15,6 +16,7 @@ function App(){
           <Route path='/signup' element={<Signup />} />
           <Route path='/home/:userId' element = {<Main />} />
           <Route path='/editor' element={<EditorPage />} />
+          <Route path='/testing' element={<EditorPageTesting />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

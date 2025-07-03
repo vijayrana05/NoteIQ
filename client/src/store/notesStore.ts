@@ -37,6 +37,7 @@ export const useNotesStore = create<NotesState>((set) => ({
   setSubject: (subject: string) => set({ subject }),
 
   fetchNotes: async () => {
+    console.log("fetchnotes render")
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.get("http://localhost:5000/api/notesRoutes/", {
@@ -49,6 +50,7 @@ export const useNotesStore = create<NotesState>((set) => ({
   },
 
   addNote: async ({ title, content, subject, color }: NewNote) => {
+    console.log("add note render")
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -71,6 +73,7 @@ export const useNotesStore = create<NotesState>((set) => ({
     }
   },
   updateNote: async (note: Note) => {
+    console.log("update note render")
     try {
       const token = localStorage.getItem("authToken");
 

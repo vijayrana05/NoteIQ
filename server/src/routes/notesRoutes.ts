@@ -26,7 +26,7 @@ router.post('/', verifyToken, async (req:any, res:any) => {
 // get all notes
 router.get('/', verifyToken, async (req, res) => {
   const userId = (req as any).user.id;
-  const notes = await Note.find({ owner: userId });
+  const notes = await Note.find().sort({ updatedAt: -1 }) // descending order
   res.json(notes);
 });
 

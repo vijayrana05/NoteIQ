@@ -1,17 +1,18 @@
-import { useState} from "react";
+import { useState, useEffect } from "react";
+import { useNotesStore } from "../../store/notesStore";
 interface ModalProps {
     isOpen: boolean;
-    subject:string
+    // subject: string
     onClose: () => void;
     onSave: (subject: string, color: string) => void;
-    id:string | undefined
+    id: string | undefined
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave ,subject,id}) => {
-    if(!id){
-        subject = "Preview notes here"
-    }
-
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, id }) => {
+    // if (!id) {
+    //     subject = "Preview notes here"
+    // }
+    // console.log("modal renders")
     const allowedColors = [
         "rgb(254, 201, 113)",  // yellowish
         "rgb(254, 155, 114)",  // brownish
@@ -20,7 +21,24 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave ,subject,id}) => 
         "rgb(0, 212, 254)",    // blue
     ];
     const [noteColor, setNoteColor] = useState("#3b82f6");
-    const [noteSubject, setNoteSubject] = useState(subject);
+    // const [noteSubject, setNoteSubject] = useState(subject);
+    const subject = useNotesStore((state) => state.subject);
+    const setSubject = useNotesStore((state) => state.setSubject);
+
+    // useEffect(() => {
+    //     if (isOpen) {
+    //         setNoteSubject(id ? subject : "Preview notes here");
+    //     }
+    // }, [isOpen, subject, id]);
+
+    // if (!isOpen) return null;
+    useEffect(() => {
+        if (isOpen) {
+            if (!id) {
+                setSubject("Preview notes here");
+            }
+        }
+    }, [isOpen, id, setSubject]);
 
     if (!isOpen) return null;
 
@@ -29,15 +47,22 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave ,subject,id}) => 
             <div className="p-6 rounded-lg shadow-lg bg-white w-96 space-y-4">
                 <div className="flex justify-between items-center">
                     <h2 className="text-gray-900 text-xl font-bold">Create Note</h2>
-                    <button onClick={onClose} className="text-gray-600 text-2xl font-bold">&times;</button>
-                </div>
+                    <button
+                        onClick={() => {
+                             // ✅ Optionally reset on close
+                            onClose();
+                        }}
+                        className="text-gray-600 text-2xl font-bold"
+                    >
+                        &times;
+                    </button>                </div>
 
                 <div className="flex flex-col space-y-2">
                     <label className="text-sm font-medium text-gray-700">Subject</label>
                     <input
                         type="text"
-                        value={noteSubject}
-                        onChange={(e) => setNoteSubject(e.target.value)}
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
                         className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="Enter subject"
                     />
@@ -70,7 +95,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave ,subject,id}) => 
                 <button
                     className="w-full mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
                     onClick={() => {
-                        onSave(noteSubject, noteColor); // ✅ send data to parent
+                        onSave(subject, noteColor); // ✅ send data to parent
                         onClose();
                     }}
                 >
