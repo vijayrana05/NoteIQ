@@ -1,4 +1,4 @@
-import { useEditor, EditorContent, type JSONContent } from "@tiptap/react"
+ import { useEditor, EditorContent, type JSONContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import SideBar from "../components/ui/sideBar";
@@ -21,19 +21,25 @@ const extensions = [
 
 export function EditorPage() {
     const location = useLocation();
-    const { _id, content, subject } = location.state || { content: { type: "doc", content: [] } };
+    const { _id, content, subject,title } = location.state || { content: { type: "doc", content: [] } };
     let hasInitializedContent = useRef(false);
     // console.log(subject)
     const sideCardSelected = location.state;
     if (sideCardSelected) {
         hasInitializedContent.current = false
     }
+    const setTitle = useNotesStore((state) => state.setTitle);
     const setSubject = useNotesStore((state) => state.setSubject);
     useEffect(() => {
         if (subject) {
             setSubject(subject); // Keep the store in sync with the editor note
         }
     }, [subject]);
+        useEffect(() => {
+        if (title) {
+            setTitle(title); // Keep the store in sync with the editor note
+        }
+    }, [title]);
 
     const [isModalOpen, setModalOpen] = useState(false);
     const addNote = useNotesStore((state) => state.addNote); // ✅ get addNote from store
@@ -93,24 +99,18 @@ export function EditorPage() {
                 <Modal
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
-                    onSave={(subject, color) => {
+                    onSave={(subject, color,title) => {
                         const fullJson = editor.getJSON();
-                        const nodes = fullJson.content || [];
 
-                        const firstNode = nodes[0];
-                        const isTitle = firstNode?.type === "heading" && firstNode?.attrs?.level === 1;
-                        const titleText = isTitle
-                            ? firstNode.content?.map((c: any) => c.text).join('') || ''
-                            : '';
 
                         const bodyJson: JSONContent = {
                             type: "doc",
-                            content: isTitle ? nodes.slice(1) : nodes,
+                            content: fullJson.content || [],
                         };
                         if (_id) {
                             updateNote({
                                 _id,
-                                title: titleText,
+                                title,
                                 content: bodyJson,
                                 subject,
                                 color,
@@ -119,7 +119,7 @@ export function EditorPage() {
                         }
                         else {
                             addNote({
-                                title: titleText,
+                                title,
                                 content: bodyJson,
                                 subject,
                                 color,

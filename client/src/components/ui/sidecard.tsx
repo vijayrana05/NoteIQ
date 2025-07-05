@@ -1,4 +1,3 @@
-import { VscEdit } from "react-icons/vsc";
 import { type JSONContent } from "@tiptap/react";
 import { generateHTML } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -41,19 +40,10 @@ function SideCard({
     // Memoize the navigation state object
     const navigationState = useMemo   (() => ({
         _id: noteId,
+        title: title,
         subject: subject,
         sideCardSelected: true,
-        content: {
-            type: "doc",
-            content: [
-                {
-                    type: "heading",
-                    attrs: { level: 1 },
-                    content: [{ type: "text", text: title }],
-                },
-                ...(content?.content || []),
-            ],
-        },
+        content: content
     }), [noteId, subject, title, content]);
     
     // Memoize the click handler

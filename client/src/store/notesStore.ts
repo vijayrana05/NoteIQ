@@ -26,14 +26,18 @@ type NotesState = {
   fetchNotes: () => Promise<void>;
   addNote: (note: NewNote) => Promise<void>;
   updateNote: (note: Note) => Promise<void>; // 👈 Add this
-  subject: string
+  subject: string;
+  title:string;
   setSubject: (subject: string) => void;
+  setTitle: (title:string) =>void;
 
 };
 
 export const useNotesStore = create<NotesState>((set) => ({
   notes: [],
   subject: "",
+  title: "",
+  setTitle: (title : string) => set({title}),
   setSubject: (subject: string) => set({ subject }),
 
   fetchNotes: async () => {

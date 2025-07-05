@@ -5,6 +5,9 @@ import SideBar from "../components/ui/sideBar";
 import NoteCard from "../components/ui/noteCard";
 import { useNotesStore } from "../store/notesStore";
 import { useNavigate } from "react-router-dom";
+import PdfUpload from "../components/ui/pdfUpload";
+
+
 
 
 export function Main() {
@@ -39,19 +42,18 @@ export function Main() {
 function GridLayout() {
   const notes = useNotesStore((state) => state.notes)
   const navigate = useNavigate()
+
   // console.log("notes lenght inside gridlayout is = ",notes.length)
   return (
     <div className=" w-full max-w-screen overflow-x-hidden">
       <div className=" flex  justify-center mt-10 ">
-        <div className="sm:w-120 sm:h-40    w-80 h-40    flex items-center relative">
-          <div className="sm:w-45 sm:h-45 w-30 h-30 border-4 flex items-center justify-center rounded-3xl border-dashed absolute sm:left-0">
+        <div className="sm:w-120 sm:h-40   justify-between   w-80 h-40    flex items-center ">
+          <div className="sm:w-45 sm:h-45 w-30 h-30  text-left border-4 flex items-center justify-center rounded-3xl border-dashed ">
             <MdNoteAdd className="sm:text-8xl text-6xl" onClick={() => {
               navigate("/editor")
             }} />
           </div>
-          <div className="sm:w-45 sm:h-45 w-30 h-30 border-4 rounded-3xl border-dashed absolute right-0">
-            helo
-          </div>
+          <PdfUpload />
         </div>
       </div>
       <div className=" flex flex-col lg:ml-36 pl-4 pr-4">
@@ -83,6 +85,8 @@ function GridLayout() {
     </div>
   );
 }
+
+
 // lg se jada screen to tb ye krio
 
 

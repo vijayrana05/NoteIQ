@@ -30,17 +30,18 @@ router.post('/upload', verifyToken ,upload.single('file'), async (req, res):Prom
     
 
     const summary = await summarizeText(extractedText);
-    const note = new Note({ title: file.originalname, content: summary, owner: userId });
-    await note.save();
-    console.log("note saved");
-    const noteId = note._id;
-    createEmbeddings(summary,noteId)
+    // const note = new Note({ title: file.originalname, content: summary, owner: userId });
+
+    // await note.save();
+    // console.log("note saved");
+    // const noteId = note._id;
+    // createEmbeddings(summary,noteId)
     await fs.unlink(file.path); 
     
     
 
     console.log("text is generated i guess")
-    res.json({ summary });
+    res.json({ summary});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Something went wrong while uploading or summarizing' });

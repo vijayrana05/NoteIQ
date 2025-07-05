@@ -4,7 +4,7 @@ interface ModalProps {
     isOpen: boolean;
     // subject: string
     onClose: () => void;
-    onSave: (subject: string, color: string) => void;
+    onSave: (subject: string, color: string, title: string) => void;
     id: string | undefined
 }
 
@@ -24,6 +24,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, id }) => {
     // const [noteSubject, setNoteSubject] = useState(subject);
     const subject = useNotesStore((state) => state.subject);
     const setSubject = useNotesStore((state) => state.setSubject);
+    const title = useNotesStore((state) => state.title)
+    const setTitle = useNotesStore((state) => state.setTitle)
 
     // useEffect(() => {
     //     if (isOpen) {
@@ -35,10 +37,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, id }) => {
     useEffect(() => {
         if (isOpen) {
             if (!id) {
-                setSubject("Preview notes here");
+                setSubject("Enter subject here");
+                setTitle("Enter title here")
             }
         }
-    }, [isOpen, id, setSubject]);
+    }, [isOpen, id, setSubject, setTitle]);
 
     if (!isOpen) return null;
 
@@ -49,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, id }) => {
                     <h2 className="text-gray-900 text-xl font-bold">Create Note</h2>
                     <button
                         onClick={() => {
-                             // ✅ Optionally reset on close
+                            // ✅ Optionally reset on close
                             onClose();
                         }}
                         className="text-gray-600 text-2xl font-bold"
@@ -57,6 +60,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, id }) => {
                         &times;
                     </button>                </div>
 
+                
+                <div className="flex flex-col space-y-2">
+                    <label className="text-sm font-medium text-gray-700">Title</label>
+                    <input
+                        type="text"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter subject"
+                    />
+                </div>
                 <div className="flex flex-col space-y-2">
                     <label className="text-sm font-medium text-gray-700">Subject</label>
                     <input
@@ -67,16 +81,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, id }) => {
                         placeholder="Enter subject"
                     />
                 </div>
-
-                {/* <div className="flex flex-col space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Select Color</label>
-                    <input
-                        type="color"
-                        value={noteColor}
-                        onChange={(e) => setNoteColor(e.target.value)}
-                        className="w-16 h-10 border border-gray-300 rounded"
-                    />
-                </div> */}
                 <div className="flex flex-col space-y-2">
                     <label className="text-sm font-medium text-gray-700">Select Color</label>
                     <div className="flex gap-3">
@@ -95,7 +99,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, id }) => {
                 <button
                     className="w-full mt-4 bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
                     onClick={() => {
-                        onSave(subject, noteColor); // ✅ send data to parent
+                        onSave(subject, noteColor, title); // ✅ send data to parent
                         onClose();
                     }}
                 >

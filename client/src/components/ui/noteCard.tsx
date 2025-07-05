@@ -64,17 +64,8 @@ function NoteCard({ noteId, title, content, subject, color, fav, createdAt, upda
               state: {
                 _id:noteId,
                 subject:subject,
-                content: {
-                  type: "doc",
-                  content: [
-                    {
-                      type: "heading",
-                      attrs: { level: 1 },
-                      content: [{ type: "text", text: title }],
-                    },
-                    ...(content?.content || []),
-                  ],
-                },
+                title:title,
+                content: content
               },
             })
           }

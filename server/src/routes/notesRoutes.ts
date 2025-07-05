@@ -97,7 +97,7 @@ router.get('/:id', verifyToken, async (req: Request, res: Response): Promise<voi
     res.status(500).json({ error: 'Failed to fetch note' });
   }
 });
-
+ //delete a note
 router.delete('/:id', verifyToken, async (req: Request, res: Response): Promise<void> => {
   const userId = (req as any).user.id;
   const noteId = req.params.id;
