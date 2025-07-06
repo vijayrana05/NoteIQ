@@ -5,44 +5,52 @@ const schema = new Schema({
   nodes: {
     doc: { content: 'block+' },
     paragraph: { content: 'inline*', group: 'block' },
+    heading: { content: 'inline*', group: 'block', attrs: { level: { default: 1 } } },
     text: { group: 'inline' },
-    heading: { content: 'inline*', group: 'block' },
-    // Add more as needed (e.g., bullet_list, list_item)
-    // For TipTap extensions that introduce custom nodes, you'd add them here.
+    bulletList: { content: 'listItem+', group: 'block' },
+    orderedList: { content: 'listItem+', group: 'block' },
+    listItem: { content: 'paragraph+', group: 'block' },
+    horizontalRule: {
+      group: 'block',
+      parseDOM: [{ tag: 'hr' }],
+      toDOM() {
+        return ['hr'];
+      },
+    },
+    // Add more node types as needed
   },
   marks: {
-    // Add common marks that TipTap might use
     bold: {
-      toDOM() { return ['strong', 0]; },
+      toDOM: () => ['strong', 0],
       parseDOM: [{ tag: 'strong' }, { tag: 'b' }],
     },
     italic: {
-      toDOM() { return ['em', 0]; },
+      toDOM: () => ['em', 0],
       parseDOM: [{ tag: 'em' }, { tag: 'i' }],
     },
-    underline: { // <--- Add the underline mark here
-      toDOM() { return ['u', 0]; },
+    underline: {
+      toDOM: () => ['u', 0],
       parseDOM: [{ tag: 'u' }],
     },
-    // Add other marks like 'strike', 'link', etc., if your TipTap content uses them
     strike: {
-      toDOM() { return ['s', 0]; },
+      toDOM: () => ['s', 0],
       parseDOM: [{ tag: 's' }],
     },
     link: {
-      attrs: {
-        href: {},
-        title: { default: null },
-      },
+      attrs: { href: {}, title: { default: null } },
       inclusive: false,
-      toDOM(mark) { return ['a', mark.attrs]; },
-      parseDOM: [{
-        tag: 'a',
-        getAttrs(dom) {
-          if (typeof dom === 'string') return {}; // Should not happen with real DOM elements
-          return { href: dom.getAttribute('href'), title: dom.getAttribute('title') };
-        }
-      }],
+      toDOM: (mark) => ['a', mark.attrs],
+      parseDOM: [
+        {
+          tag: 'a',
+          getAttrs(dom: any) {
+            return {
+              href: dom.getAttribute('href'),
+              title: dom.getAttribute('title'),
+            };
+          },
+        },
+      ],
     },
   },
 });

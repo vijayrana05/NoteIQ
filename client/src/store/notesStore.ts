@@ -27,9 +27,11 @@ type NotesState = {
   addNote: (note: NewNote) => Promise<void>;
   updateNote: (note: Note) => Promise<void>; // 👈 Add this
   subject: string;
-  title:string;
+  title: string;
   setSubject: (subject: string) => void;
-  setTitle: (title:string) =>void;
+  setTitle: (title: string) => void;
+  deleteNote: (id: string) => Promise<void>; // ✅ added
+
 
 };
 
@@ -37,11 +39,11 @@ export const useNotesStore = create<NotesState>((set) => ({
   notes: [],
   subject: "",
   title: "",
-  setTitle: (title : string) => set({title}),
+  setTitle: (title: string) => set({ title }),
   setSubject: (subject: string) => set({ subject }),
 
   fetchNotes: async () => {
-    console.log("fetchnotes render")
+    // console.log("fetchnotes render")
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.get("http://localhost:5000/api/notesRoutes/", {
@@ -54,7 +56,7 @@ export const useNotesStore = create<NotesState>((set) => ({
   },
 
   addNote: async ({ title, content, subject, color }: NewNote) => {
-    console.log("add note render")
+    // console.log("add note render")
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
@@ -77,7 +79,7 @@ export const useNotesStore = create<NotesState>((set) => ({
     }
   },
   updateNote: async (note: Note) => {
-    console.log("update note render")
+    // console.log("update note render")
     try {
       const token = localStorage.getItem("authToken");
 
@@ -108,4 +110,25 @@ export const useNotesStore = create<NotesState>((set) => ({
       console.error("Error updating note", err);
     }
   },
+  deleteNote: async (id: string) => {
+    try {
+      const token = localStorage.getItem("authToken");
+
+      await axios.delete(`http://localhost:5000/api/notesRoutes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Remove the deleted note from the store
+      set((state) => ({
+        notes: state.notes.filter((note) => note._id !== id),
+      }));
+
+      alert("Note deleted!");
+    } catch (err) {
+      console.error("Error deleting note", err);
+    }
+  },
+
 }));

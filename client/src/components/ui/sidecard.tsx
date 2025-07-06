@@ -28,12 +28,12 @@ function SideCard({
     updatedAt 
 }: SideCardProps) {
     
-    console.log("sidecard rerender")
+    // console.log("sidecard rerender")
     const navigate = useNavigate();
     
     // Memoize HTML generation since it's expensive
     const html = useMemo(() => {
-        console.log("html memo sidecard")
+        // console.log("html memo sidecard")
         return generateHTML(content, [StarterKit, Underline]);
     }, [content]);
     

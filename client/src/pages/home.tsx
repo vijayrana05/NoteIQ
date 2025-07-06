@@ -18,7 +18,7 @@ export function Main() {
   useEffect(() => {
     if (notes.length === 0) {
       fetchNotes();
-      console.log("fetchnotes occured isndie home")
+      // console.log("fetchnotes occured isndie home")
     }
     // console.log("notes lenght isndie home is = ",notes.length)
   }, [notes.length, fetchNotes]);
@@ -53,7 +53,7 @@ function GridLayout() {
               navigate("/editor")
             }} />
           </div>
-          <PdfUpload />
+          <PdfUpload  />
         </div>
       </div>
       <div className=" flex flex-col lg:ml-36 pl-4 pr-4">

@@ -48,12 +48,12 @@ export function EditorPage() {
     // console.log("notes length inside editorPAge is = ", notes.length)
     // console.log("rendedring")
     // console.log(subject)
-    console.log("rendered")
+    // console.log("rendered")
     const fetchNotes = useNotesStore((state) => state.fetchNotes)
     useEffect(() => {
         if (notes.length === 0) {
             fetchNotes();
-            console.log("fetchnotes runs inside editor page", notes.length)
+            // console.log("fetchnotes runs inside editor page", notes.length)
             // console.log("fetchnotes occured")
         }
         // console.log("isnide fetchnotes use effect")
@@ -71,7 +71,7 @@ export function EditorPage() {
         if (editor && content && !hasInitializedContent.current) {
             editor.commands.setContent(content);
             hasInitializedContent.current = true;
-            console.log("initial content set");
+            // console.log("initial content set");
         }
     }, [editor, content]);
     return (<div>

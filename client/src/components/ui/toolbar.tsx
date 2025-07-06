@@ -9,6 +9,8 @@ import { LuHeading1 } from "react-icons/lu";
 import { LuHeading2 } from "react-icons/lu";
 import { LuHeading3 } from "react-icons/lu";
 import { FaCode } from "react-icons/fa6";
+import { RiAiGenerate2 } from "react-icons/ri";
+
 import { FaRegSave } from "react-icons/fa";
 import { type Editor } from "@tiptap/react";
 
@@ -153,6 +155,11 @@ function Toolbar({ editor, setModalOpen }: { editor: Editor; setModalOpen: any }
                 setModalOpen(true)
             }}>
                 <FaRegSave />
+            </button>
+            <button className="w-10 h-10 text-xl flex items-center justify-center rounded transition  hover:bg-gray-300" onClick={() => {
+                setModalOpen(true)
+            }}>
+                <RiAiGenerate2 />
             </button>
         </div>
     );
