@@ -43,7 +43,6 @@ function GridLayout() {
   const notes = useNotesStore((state) => state.notes)
   const navigate = useNavigate()
 
-  // console.log("notes lenght inside gridlayout is = ",notes.length)
   return (
     <div className=" w-full max-w-screen overflow-x-hidden">
       <div className=" flex  justify-center mt-10 ">
@@ -57,12 +56,10 @@ function GridLayout() {
         </div>
       </div>
       <div className=" flex flex-col lg:ml-36 pl-4 pr-4">
-        {/* Responsive heading alignment */}
         <div className="mt-20 self-center sm:self-start">
           <h1 className="text-6xl font-semibold ">Notes</h1>
         </div>
 
-        {/* Grid wrapper with full width */}
         <div className="w-full pt-4 border-t-2 border-gray-300">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {notes.map((card: any) => (

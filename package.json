@@ -3,6 +3,7 @@
     "@tiptap/core": "^2.24.2",
     "@tiptap/starter-kit": "^2.24.2",
     "markdown-it": "^14.1.0",
-    "marked": "^16.0.0"
+    "marked": "^16.0.0",
+    "remove-markdown": "^0.6.2"
   }
 }

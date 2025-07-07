@@ -9,6 +9,7 @@ type Note = {
   content: JSONContent;
   subject: string;
   color: string;
+  plainText: string;
   fav: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -19,6 +20,7 @@ type NewNote = {
   content: JSONContent;
   subject: string;
   color: string;
+  plainText: string
 };
 
 type NotesState = {
@@ -55,13 +57,13 @@ export const useNotesStore = create<NotesState>((set) => ({
     }
   },
 
-  addNote: async ({ title, content, subject, color }: NewNote) => {
+  addNote: async ({ title, content, subject, color,plainText }: NewNote) => {
     // console.log("add note render")
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
         "http://localhost:5000/api/notesRoutes/",
-        { title, content, subject, color },
+        { title, content, subject, color,plainText },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -90,6 +92,7 @@ export const useNotesStore = create<NotesState>((set) => ({
           content: note.content,
           subject: note.subject,
           color: note.color,
+          plainText:note.plainText
         },
         {
           headers: {

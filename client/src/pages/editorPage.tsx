@@ -1,4 +1,4 @@
- import { useEditor, EditorContent, type JSONContent } from "@tiptap/react"
+import { useEditor, EditorContent, type JSONContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import SideBar from "../components/ui/sideBar";
@@ -10,6 +10,7 @@ import Modal from "../components/ui/Modal";
 import SideCard from "../components/ui/sidecard";
 import { useLocation } from "react-router-dom";
 import { useRef } from "react";
+import AskAiModal from "../components/ui/askAiModal";
 
 import '../App.css'
 const extensions = [
@@ -21,7 +22,7 @@ const extensions = [
 
 export function EditorPage() {
     const location = useLocation();
-    const { _id, content, subject,title } = location.state || { content: { type: "doc", content: [] } };
+    const { _id, content, subject, title } = location.state || { content: { type: "doc", content: [] } };
     let hasInitializedContent = useRef(false);
     // console.log(subject)
     const sideCardSelected = location.state;
@@ -35,13 +36,14 @@ export function EditorPage() {
             setSubject(subject); // Keep the store in sync with the editor note
         }
     }, [subject]);
-        useEffect(() => {
+    useEffect(() => {
         if (title) {
             setTitle(title); // Keep the store in sync with the editor note
         }
     }, [title]);
 
     const [isModalOpen, setModalOpen] = useState(false);
+    const [isAskAiModalOpen, setAskAiModalOpen] = useState(false)
     const addNote = useNotesStore((state) => state.addNote); // ✅ get addNote from store
     const updateNote = useNotesStore((state) => state.updateNote)
     const notes = useNotesStore((state) => state.notes);
@@ -50,6 +52,7 @@ export function EditorPage() {
     // console.log(subject)
     // console.log("rendered")
     const fetchNotes = useNotesStore((state) => state.fetchNotes)
+    
     useEffect(() => {
         if (notes.length === 0) {
             fetchNotes();
@@ -63,6 +66,12 @@ export function EditorPage() {
         extensions,
         content: content,
     })
+    // const getTextFromEditor = (editor:any) => {
+    //     return editor.getText();
+    // };
+    // const plaintxt = getTextFromEditor(editor)
+    // console.log(getTextFromEditor(editor))
+    // console.log(plaintxt)
     if (!editor) {
         return null;
     }
@@ -74,6 +83,7 @@ export function EditorPage() {
             // console.log("initial content set");
         }
     }, [editor, content]);
+    
     return (<div>
         <div className="flex">
             <div className=" border-r-2 border-gray-200  min-h-screen   hidden min-w-25 lg:block">
@@ -90,16 +100,15 @@ export function EditorPage() {
                 {/* <div>hello</div> */}
 
 
-                <Toolbar editor={editor} setModalOpen={setModalOpen} />
+                <Toolbar editor={editor} setModalOpen={setModalOpen} setAskAiModalOpen={(setAskAiModalOpen)} />
 
                 <div className=" rounded-lg   mt-6 ">
                     <EditorContent editor={editor} className="tiptap min-h-130 pl-10  pt-3 cursor-white  overflow-y-scroll " />
                 </div>
-
                 <Modal
                     isOpen={isModalOpen}
                     onClose={() => setModalOpen(false)}
-                    onSave={(subject, color,title) => {
+                    onSave={(subject, color, title) => {
                         const fullJson = editor.getJSON();
 
 
@@ -111,6 +120,7 @@ export function EditorPage() {
                             updateNote({
                                 _id,
                                 title,
+                                plainText:editor.getText(),
                                 content: bodyJson,
                                 subject,
                                 color,
@@ -119,6 +129,7 @@ export function EditorPage() {
                         }
                         else {
                             addNote({
+                                plainText:editor.getText(),
                                 title,
                                 content: bodyJson,
                                 subject,
@@ -128,9 +139,10 @@ export function EditorPage() {
                     }}
                     id={_id}
 
-
-
-
+                />
+                <AskAiModal
+                    isOpenAskAi={isAskAiModalOpen}
+                    onCloseAskAi={() => setAskAiModalOpen(false)}
                 />
 
             </div>

@@ -11,9 +11,8 @@ const router = express.Router();
 
 // create a new note
 router.post('/', verifyToken, async (req:any, res:any) => {
-  const { title, content,subject,color, } = req.body;
+  const { title, content,subject,color,plainText } = req.body;
   const userId = (req as any).user.id;
-  const plainText = tiptapJsonToPlainText(content);
   const newNote = new Note({ title, content, owner: userId,subject ,color });
   await newNote.save();
   const bedings = await createEmbeddings(plainText,newNote.id)
@@ -24,18 +23,32 @@ router.post('/', verifyToken, async (req:any, res:any) => {
 });
 
 // get all notes
+// router.get('/', verifyToken, async (req, res) => {
+//   const userId = (req as any).user.id;
+//   const notes = await Note.find().sort({ updatedAt: -1 }) // descending order
+//   res.json(notes);
+// });
+
 router.get('/', verifyToken, async (req, res) => {
-  const userId = (req as any).user.id;
-  const notes = await Note.find().sort({ updatedAt: -1 }) // descending order
-  res.json(notes);
+  try {
+    const userId = (req as any).user.id;
+    const notes = await Note.find({ owner:userId }).sort({ updatedAt: -1 });
+    // console.log(userId)
+    res.json(notes);
+    // console.log(notes)
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
 });
+
 
 // Update a note
 router.put('/:id', verifyToken, async (req: Request, res: Response): Promise<void> =>{
-  const { title, content , subject,color } = req.body;
+  const { title, content , subject,color,plainText } = req.body;
   const userId = (req as any).user.id;
   const noteId = new Types.ObjectId(req.params.id);
-  const plainText = tiptapJsonToPlainText(content);
+  // const plainText = tiptapJsonToPlainText(content);
 
 
 

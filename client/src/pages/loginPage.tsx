@@ -28,7 +28,7 @@ export function Login() {
             }
 
             if (response.ok && userId) {
-                navigate(`/home/${userId}`);
+                navigate(`/home`);
             } else {
                 setMessage(data.message || "Signin fdkdkd.");
             }

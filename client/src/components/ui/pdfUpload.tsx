@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import { useNotesStore } from "../../store/notesStore";
 import { convertMarkdownToTiptapJson } from "../../features/markdown";
 import { usePdfStore } from "../../store/pdfStore";
 import { FaFilePdf } from "react-icons/fa";
+
 
 function PdfUpload() {
     const navigate = useNavigate();

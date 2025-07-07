@@ -2,6 +2,7 @@ import { FiPlus } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { MdNoteAdd } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import { FaRegStar } from "react-icons/fa";
 
 import { IoHome } from "react-icons/io5";
@@ -9,7 +10,7 @@ import { IoHome } from "react-icons/io5";
 
 function SideBar() {
     const [isOpen, setIsOpen] = useState(false);
-
+    const navigate = useNavigate();
     return (
         <div className="flex justify-center  min-h-screen relative pt-10">
             {/* Floating Action Button */}
@@ -33,7 +34,9 @@ function SideBar() {
                         transition={{ duration: 0.3 }}
                     >
                         <button className="text-2xl flex items-center justify-center">
-                            <MdNoteAdd />
+                            <MdNoteAdd onClick={() => {
+                                navigate("/editor")
+                            }} />
                         </button>
                     </motion.div>
                 )}
@@ -48,7 +51,9 @@ function SideBar() {
                         transition={{ duration: 0.5 }}
                     >
                         <button className="text-2xl flex items-center justify-center">
-                            <IoHome />
+                            <IoHome onClick={() => {
+                                navigate('/home')
+                            }} />
                         </button>
                     </motion.div>
                 )}
