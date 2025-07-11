@@ -17,52 +17,54 @@ interface SideCardProps {
     updatedAt: string;
 }
 
-function SideCard({ 
-    noteId, 
-    title, 
-    content, 
-    subject, 
-    color, 
-    fav, 
-    createdAt, 
-    updatedAt 
+function SideCard({
+    noteId,
+    title,
+    content,
+    subject,
+    color,
+    fav,
+    createdAt,
+    updatedAt
 }: SideCardProps) {
-    
+
     // console.log("sidecard rerender")
     const navigate = useNavigate();
-    
+    createdAt = createdAt.slice(0, 10)
+    const updatedDate = updatedAt.slice(0, 10)
+
     // Memoize HTML generation since it's expensive
     const html = useMemo(() => {
         // console.log("html memo sidecard")
         return generateHTML(content, [StarterKit, Underline]);
     }, [content]);
-    
+
     // Memoize the navigation state object
-    const navigationState = useMemo   (() => ({
+    const navigationState = useMemo(() => ({
         _id: noteId,
         title: title,
         subject: subject,
         sideCardSelected: true,
         content: content
     }), [noteId, subject, title, content]);
-    
+
     // Memoize the click handler
     const handleClick = useCallback(() => {
         console.log("navigate memeo sidecard")
         navigate("/editor", { state: navigationState });
     }, [navigate, navigationState]);
-    
+
     return (
-        <div 
-            onClick={handleClick} 
-            style={{ backgroundColor: color }} 
+        <div
+            onClick={handleClick}
+            style={{ backgroundColor: color }}
             className="relative text-black p-4 h-58 rounded-xl shadow-md max-w-64 mx-auto cursor-pointer hover:shadow-lg transition-shadow"
         >
             <p className="text-xs text-gray-600">{createdAt}</p>
             <h3 className="text-xl pt-1 font-semibold mb-2 line-clamp-1">{title}</h3>
             <hr className="border-gray-600 my-2" />
-            <p 
-                className="text-black font-sans text-sm leading-normal line-clamp-4" 
+            <p
+                className="text-black font-sans text-sm leading-normal line-clamp-4"
                 dangerouslySetInnerHTML={{ __html: html }}
             />
             <p className="text-xs absolute bottom-6 left-4 right-16 line-clamp-2 text-gray-800">

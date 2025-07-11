@@ -11,6 +11,7 @@ import SideCard from "../components/ui/sidecard";
 import { useLocation } from "react-router-dom";
 import { useRef } from "react";
 import AskAiModal from "../components/ui/askAiModal";
+import QueryNotesModal from "../components/ui/queryModal";
 
 import '../App.css'
 const extensions = [
@@ -44,6 +45,8 @@ export function EditorPage() {
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [isAskAiModalOpen, setAskAiModalOpen] = useState(false)
+    const [isQueryNotesModalOpen, setQueryNotesModalOpen] = useState(false)
+
     const addNote = useNotesStore((state) => state.addNote); // ✅ get addNote from store
     const updateNote = useNotesStore((state) => state.updateNote)
     const notes = useNotesStore((state) => state.notes);
@@ -52,7 +55,7 @@ export function EditorPage() {
     // console.log(subject)
     // console.log("rendered")
     const fetchNotes = useNotesStore((state) => state.fetchNotes)
-    
+
     useEffect(() => {
         if (notes.length === 0) {
             fetchNotes();
@@ -83,7 +86,7 @@ export function EditorPage() {
             // console.log("initial content set");
         }
     }, [editor, content]);
-    
+
     return (<div>
         <div className="flex">
             <div className=" border-r-2 border-gray-200  min-h-screen   hidden min-w-25 lg:block">
@@ -100,7 +103,7 @@ export function EditorPage() {
                 {/* <div>hello</div> */}
 
 
-                <Toolbar editor={editor} setModalOpen={setModalOpen} setAskAiModalOpen={(setAskAiModalOpen)} />
+                <Toolbar editor={editor} setModalOpen={setModalOpen} setAskAiModalOpen={(setAskAiModalOpen)} setQueryNotesModalOpen={(setQueryNotesModalOpen)} />
 
                 <div className=" rounded-lg   mt-6 ">
                     <EditorContent editor={editor} className="tiptap min-h-130 pl-10  pt-3 cursor-white  overflow-y-scroll " />
@@ -120,7 +123,7 @@ export function EditorPage() {
                             updateNote({
                                 _id,
                                 title,
-                                plainText:editor.getText(),
+                                plainText: editor.getText(),
                                 content: bodyJson,
                                 subject,
                                 color,
@@ -129,7 +132,7 @@ export function EditorPage() {
                         }
                         else {
                             addNote({
-                                plainText:editor.getText(),
+                                plainText: editor.getText(),
                                 title,
                                 content: bodyJson,
                                 subject,
@@ -144,7 +147,11 @@ export function EditorPage() {
                     isOpenAskAi={isAskAiModalOpen}
                     onCloseAskAi={() => setAskAiModalOpen(false)}
                 />
-
+                <QueryNotesModal
+                    isOpenQueryNotes={isQueryNotesModalOpen}
+                    onCloseQueryNotes={() => setQueryNotesModalOpen(false)}
+                    noteId={_id}
+                />
             </div>
         </div>
 

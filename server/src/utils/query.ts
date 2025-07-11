@@ -10,7 +10,7 @@ export async function searchNotes(query: string) {
 
   // Step 2: Query Pinecone
   const result = await index.query({
-    topK: 1,
+    topK: 3,
     vector: query_embedding.embedding.values,
     includeMetadata: true,
   });

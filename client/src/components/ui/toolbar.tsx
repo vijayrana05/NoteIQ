@@ -10,13 +10,15 @@ import { LuHeading2 } from "react-icons/lu";
 import { LuHeading3 } from "react-icons/lu";
 import { FaCode } from "react-icons/fa6";
 import { RiAiGenerate2 } from "react-icons/ri";
+import { AiOutlineFileSearch } from "react-icons/ai";
+
 
 import { FaRegSave } from "react-icons/fa";
 import { type Editor } from "@tiptap/react";
 
 
 
-function Toolbar({ editor, setModalOpen,setAskAiModalOpen }: { editor: Editor; setModalOpen: any; setAskAiModalOpen:any }) {
+function Toolbar({ editor, setModalOpen,setAskAiModalOpen,setQueryNotesModalOpen }: { editor: Editor; setModalOpen: any; setAskAiModalOpen:any; setQueryNotesModalOpen:any }) {
     return (
         <div className=" w-full flex justify-center flex-wrap  border-3 rounded-lg p-3 gap-3 ">
 
@@ -160,6 +162,11 @@ function Toolbar({ editor, setModalOpen,setAskAiModalOpen }: { editor: Editor; s
                 setAskAiModalOpen(true)
             }}>
                 <RiAiGenerate2 />
+            </button>
+            <button className="w-10 h-10 text-xl flex items-center justify-center rounded transition  hover:bg-gray-300" onClick={() => {
+                setQueryNotesModalOpen(true)
+            }}>
+                <AiOutlineFileSearch />
             </button>
         </div>
     );

@@ -7,6 +7,7 @@ import notesRoutes from './routes/notesRoutes';
 import uploadRoutes from './routes/uploadRoutes';
 import searchRoutes from './routes/searchRoutes';
 import askAiRoutes from './routes/askAiRoutes'
+import queryNotesRoutes from './routes/queryNotes'
 
 dotenv.config();
 const app = express();
@@ -18,6 +19,7 @@ app.use('/api/notesRoutes', notesRoutes);
 app.use('/api/uploadRoutes',uploadRoutes )
 app.use('/api/searchRoutes',searchRoutes )
 app.use('/api/askAiRoutes',askAiRoutes)
+app.use('/api/queryNotesRoutes',queryNotesRoutes)
 
 
 // Connect to DB and start server
