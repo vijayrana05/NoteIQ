@@ -6,7 +6,7 @@ import NoteCard from "../components/ui/noteCard";
 import { useNotesStore } from "../store/notesStore";
 import { useNavigate } from "react-router-dom";
 import PdfUpload from "../components/ui/pdfUpload";
-
+import Loader from "../components/ui/loader";
 
 
 
@@ -15,6 +15,10 @@ export function Main() {
   const notes = useNotesStore((state) => state.notes);
   // console.log("rendedring")
   const fetchNotes = useNotesStore((state) => state.fetchNotes)
+  const loading = useNotesStore((state) => state.loading)
+    // if (loading) {
+    //   return <Loader />
+    // }
   useEffect(() => {
     if (notes.length === 0) {
       fetchNotes();
@@ -22,6 +26,9 @@ export function Main() {
     }
     // console.log("notes lenght isndie home is = ",notes.length)
   }, [notes.length, fetchNotes]);
+  if (loading) {
+      return <Loader />
+    }
 
 
 

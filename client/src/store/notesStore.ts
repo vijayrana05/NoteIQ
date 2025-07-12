@@ -33,6 +33,7 @@ type NotesState = {
   setSubject: (subject: string) => void;
   setTitle: (title: string) => void;
   deleteNote: (id: string) => Promise<void>; // ✅ added
+  loading: boolean;
 
 
 };
@@ -40,30 +41,32 @@ type NotesState = {
 export const useNotesStore = create<NotesState>((set) => ({
   notes: [],
   subject: "",
+  loading: false,
   title: "",
   setTitle: (title: string) => set({ title }),
   setSubject: (subject: string) => set({ subject }),
-
   fetchNotes: async () => {
-    // console.log("fetchnotes render")
+    set({ loading: true }); // start loading
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.get("http://localhost:5000/api/notesRoutes/", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      set({ notes: response.data });
+      set({ notes: response.data }); // set notes if successful
     } catch (err) {
-      console.error("Error fetching notes", err);
+      console.error("Error fetching notes", err); // log the error
+    } finally {
+      set({ loading: false }); // stop loading no matter what
     }
   },
 
-  addNote: async ({ title, content, subject, color,plainText }: NewNote) => {
+  addNote: async ({ title, content, subject, color, plainText }: NewNote) => {
     // console.log("add note render")
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
         "http://localhost:5000/api/notesRoutes/",
-        { title, content, subject, color,plainText },
+        { title, content, subject, color, plainText },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -92,7 +95,7 @@ export const useNotesStore = create<NotesState>((set) => ({
           content: note.content,
           subject: note.subject,
           color: note.color,
-          plainText:note.plainText
+          plainText: note.plainText
         },
         {
           headers: {
