@@ -1,4 +1,4 @@
-# StudyHelper
+# NoteIQ
 
 **Live Demo:** [https://study-helper-fe-vd62.vercel.app/]
 
@@ -6,7 +6,7 @@
 
 ## Overview
 
-StudyHelper is a full-stack AI-powered note-taking application. It allows users to create, edit, and organize notes, upload PDFs for summarization, and use AI to generate or query content. The project uses React, TypeScript, Zustand, and Tailwind CSS on the frontend, with a Node.js/Express backend and Google Gemini AI for embeddings and summarization.
+NoteIQ is a full-stack AI-powered note-taking application. It allows users to create, edit, and organize notes, upload PDFs for summarization, and use AI to generate or query content. The project uses React, TypeScript, Zustand, and Tailwind CSS on the frontend, with a Node.js/Express backend and Google Gemini AI for embeddings and summarization.
 
 ## Features
 
@@ -17,6 +17,7 @@ StudyHelper is a full-stack AI-powered note-taking application. It allows users 
 - 🗂 Organize notes by subject and color
 - ⭐ Mark notes as favorites
 - 🔒 User authentication (signup/login)
+- 🧠 Stores vector embeddings in Pinecone to power fast, semantic queries across your notes
 - Responsive and modern UI
 
 ## Tech Stack
