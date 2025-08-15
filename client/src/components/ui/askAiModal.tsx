@@ -48,25 +48,16 @@ export default function AskAiModal({ onCloseAskAi, isOpenAskAi }: AskAiModalProp
     if (!text) return "";
 
     let html = text
-      // Remove multiple consecutive line breaks first
       .replace(/\n\s*\n/g, '\n')
-      // Convert headers (## becomes h2, ### becomes h3, etc.)
       .replace(/^### (.*$)/gm, '<h3 class="text-lg font-semibold mt-2 mb-1">$1</h3>')
       .replace(/^## (.*$)/gm, '<h2 class="text-xl font-semibold mt-2 mb-1">$1</h2>')
       .replace(/^# (.*$)/gm, '<h1 class="text-2xl font-bold mt-2 mb-1">$1</h1>')
-      // Convert bold text (**text** becomes <strong>) - do this before list processing
       .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
-      // Convert sub-list items (*** item becomes nested <li>)
       .replace(/^ +\*\*\*(.*$)/gm, '<li class="ml-8 list-disc list-inside">$1</li>')
-      // Convert main list items (* item becomes <li>)
       .replace(/^\* (.*$)/gm, '<li class="ml-4 list-disc list-inside">$1</li>')
-      // Convert numbered lists (1. item becomes <li>)
       .replace(/^\d+\. (.*$)/gm, '<li class="ml-4 list-decimal list-inside">$1</li>')
-      // Clean up any remaining standalone asterisks that might be formatting artifacts
       .replace(/\*+/g, '')
-      // Convert single line breaks to <br> but remove extra spaces
       .replace(/\n/g, '<br>')
-      // Clean up multiple <br> tags
       .replace(/(<br>\s*){2,}/g, '<br>');
 
     return html;
@@ -190,16 +181,7 @@ export default function AskAiModal({ onCloseAskAi, isOpenAskAi }: AskAiModalProp
           </div>
         </div>
 
-        {/* Footer */}
-        {/* <div className="bg-gray-50 px-6 py-3 flex justify-between items-center text-xs text-gray-500 border-t border-gray-100">
-          <div className="flex items-center space-x-1">
-            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>Tip: Use Ctrl/Cmd + Enter for quick send</span>
-          </div>
-          <span className="text-gray-400">Powered by AI</span>
-        </div> */}
+       
       </div>
     </div>
   );

@@ -12,9 +12,7 @@ import { usePdfStore } from "../store/pdfStore";
 
 export function Main() {
 
-  // const { userId } = useParams();
   const notes = useNotesStore((state) => state.notes);
-  // console.log("rendedring")
   const fetchNotes = useNotesStore((state) => state.fetchNotes)
   const loading = useNotesStore((state) => state.loading)
   const pdfLoading = usePdfStore((state) => state.loading)
@@ -23,9 +21,7 @@ export function Main() {
   useEffect(() => {
    
       fetchNotes();
-      // console.log("fetchnotes occured isndie home")
-    
-    // console.log("notes lenght isndie home is = ",notes.length)
+
   }, [notes.length, fetchNotes]);
 
   if (loading || pdfLoading) {
@@ -34,12 +30,10 @@ export function Main() {
 
   return (
     <div className="flex relative">
-      {/* Sidebar for large screens */}
       <div className="border-r-2 border-gray-200 min-w-25 h-screen fixed hidden lg:block z-20">
         <SideBar />
       </div>
 
-      {/* Mobile Sidebar - always visible but positioned */}
       <div className="fixed top-0 left-0 h-screen z-30 lg:hidden" style={{ width: '80px' }}>
         <SideBar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       </div>

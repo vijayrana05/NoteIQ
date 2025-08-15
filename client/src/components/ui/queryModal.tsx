@@ -19,9 +19,9 @@ export default function QueryNotesModal({ onCloseQueryNotes, isOpenQueryNotes , 
   const handleAsk = async () => {
     if (!prompt.trim()) return;
     setLoading(true);
-    setResponse(""); // clear previous response
-    setShowResponse(false); // hide response
-    setAnimateIn(false); // reset animation
+    setResponse(""); 
+    setShowResponse(false); 
+    setAnimateIn(false); 
     try {
       const result = await searchAi(noteId,prompt);
       setResponse(result);

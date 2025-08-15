@@ -5,7 +5,6 @@ export async function searchInsideNote(noteId: string, query: string) {
   // 1. Embed the query
   const model = genAI.getGenerativeModel({ model: 'text-embedding-004' });
   const queryEmbedding = await model.embedContent(query);
-
   // 2. Query Pinecone for chunks of that note only
   const result = await index.query({
     topK: 3,
