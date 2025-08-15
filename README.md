@@ -90,9 +90,5 @@ uploads/  # Uploaded PDF files
 - `MONGODB_URI` - MongoDB connection string
 - `PINECONE_API_KEY` - Pinecone vector DB API key
 
-## License
 
-MIT
-
----
 
