@@ -2,6 +2,9 @@
 import { create } from "zustand";
 import { type JSONContent } from "@tiptap/react";
 import axios from "axios";
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://studyhelper-be-1.onrender.com'
+  : 'http://localhost:5000';
 
 type Note = {
   _id: string;
@@ -27,15 +30,13 @@ type NotesState = {
   notes: Note[];
   fetchNotes: () => Promise<void>;
   addNote: (note: NewNote) => Promise<void>;
-  updateNote: (note: Note) => Promise<void>; // 👈 Add this
+  updateNote: (note: Note) => Promise<void>;
   subject: string;
   title: string;
   setSubject: (subject: string) => void;
   setTitle: (title: string) => void;
-  deleteNote: (id: string) => Promise<void>; // ✅ added
+  deleteNote: (id: string) => Promise<void>;
   loading: boolean;
-
-
 };
 
 export const useNotesStore = create<NotesState>((set) => ({
@@ -46,26 +47,25 @@ export const useNotesStore = create<NotesState>((set) => ({
   setTitle: (title: string) => set({ title }),
   setSubject: (subject: string) => set({ subject }),
   fetchNotes: async () => {
-    set({ loading: true }); // start loading
+    set({ loading: true });
     try {
       const token = localStorage.getItem("authToken");
-      const response = await axios.get("http://localhost:5000/api/notesRoutes/", {
+      const response = await axios.get(`${API_URL}/api/notesRoutes/`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      set({ notes: response.data }); // set notes if successful
+      set({ notes: response.data });
     } catch (err) {
-      console.error("Error fetching notes", err); // log the error
+      console.error("Error fetching notes", err);
     } finally {
-      set({ loading: false }); // stop loading no matter what
+      set({ loading: false });
     }
   },
 
   addNote: async ({ title, content, subject, color, plainText }: NewNote) => {
-    // console.log("add note render")
     try {
       const token = localStorage.getItem("authToken");
       const response = await axios.post(
-        "http://localhost:5000/api/notesRoutes/",
+        `${API_URL}/api/notesRoutes/`,
         { title, content, subject, color, plainText },
         {
           headers: {
@@ -78,18 +78,18 @@ export const useNotesStore = create<NotesState>((set) => ({
         notes: [response.data, ...state.notes],
       }));
 
-      alert("Saved to DB!");
+      // alert("Saved to DB!");
     } catch (err) {
       console.error("Error saving note", err);
     }
   },
+
   updateNote: async (note: Note) => {
-    // console.log("update note render")
     try {
       const token = localStorage.getItem("authToken");
 
       const response = await axios.put(
-        `http://localhost:5000/api/notesRoutes/${note._id}`,
+        `${API_URL}/api/notesRoutes/${note._id}`,
         {
           title: note.title,
           content: note.content,
@@ -104,7 +104,6 @@ export const useNotesStore = create<NotesState>((set) => ({
         }
       );
 
-      // Replace the updated note in the store
       set((state) => ({
         notes: state.notes.map((n) =>
           n._id === note._id ? response.data : n
@@ -116,17 +115,17 @@ export const useNotesStore = create<NotesState>((set) => ({
       console.error("Error updating note", err);
     }
   },
+
   deleteNote: async (id: string) => {
     try {
       const token = localStorage.getItem("authToken");
 
-      await axios.delete(`http://localhost:5000/api/notesRoutes/${id}`, {
+      await axios.delete(`${API_URL}/api/notesRoutes/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      // Remove the deleted note from the store
       set((state) => ({
         notes: state.notes.filter((note) => note._id !== id),
       }));
@@ -136,5 +135,4 @@ export const useNotesStore = create<NotesState>((set) => ({
       console.error("Error deleting note", err);
     }
   },
-
 }));

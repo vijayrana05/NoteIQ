@@ -57,11 +57,11 @@ export function EditorPage() {
     const fetchNotes = useNotesStore((state) => state.fetchNotes)
 
     useEffect(() => {
-        if (notes.length === 0) {
+       
             fetchNotes();
             // console.log("fetchnotes runs inside editor page", notes.length)
             // console.log("fetchnotes occured")
-        }
+        
         // console.log("isnide fetchnotes use effect")
     }, [notes.length, fetchNotes]);
 
@@ -105,8 +105,8 @@ export function EditorPage() {
 
                 <Toolbar editor={editor} setModalOpen={setModalOpen} setAskAiModalOpen={(setAskAiModalOpen)} setQueryNotesModalOpen={(setQueryNotesModalOpen)} />
 
-                <div className=" rounded-lg   mt-6 ">
-                    <EditorContent editor={editor} className="tiptap min-h-130 pl-10  pt-3 cursor-white  overflow-y-scroll " />
+                <div className=" rounded-lg ml-2  mt-6 ">
+                    <EditorContent editor={editor} className="tiptap min-h-130 sm:pl-5 md:8  pt-3 cursor-white  overflow-y-scroll " />
                 </div>
                 <Modal
                     isOpen={isModalOpen}

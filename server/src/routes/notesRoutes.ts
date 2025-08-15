@@ -1,6 +1,5 @@
 import express, { Request ,Response } from 'express';
 import Note from '../models/note';
-import { tiptapJsonToPlainText } from '../utils/tiptapToText';
 
 import { verifyToken } from '../middleware/auth';
 import { createEmbeddings, deleteNoteEmbeddings } from '../utils/embedding';
@@ -32,6 +31,12 @@ router.post('/', verifyToken, async (req:any, res:any) => {
 router.get('/', verifyToken, async (req, res) => {
   try {
     const userId = (req as any).user.id;
+    // if(!userId) {
+    //   console.log("und id")
+    // }
+    // else{
+    // console.log(userId)
+    // }
     const notes = await Note.find({ owner:userId }).sort({ updatedAt: -1 });
     // console.log(userId)
     res.json(notes);

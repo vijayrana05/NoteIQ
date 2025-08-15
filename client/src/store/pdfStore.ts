@@ -1,5 +1,9 @@
 import { create } from 'zustand';
 import axios from 'axios';
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://studyhelper-be-1.onrender.com'
+  : 'http://localhost:5000';
+
 
 interface PdfStore {
     // title: String | null
@@ -24,7 +28,7 @@ export const usePdfStore = create<PdfStore>((set) => ({
             const token = localStorage.getItem("authToken");
 
             const res = await axios.post(
-                'http://localhost:5000/api/uploadRoutes/upload', // adjust based on your backend route
+                `${API_URL}/api/uploadRoutes/upload`, // adjust based on your backend route
                 formData,
                 {
                     headers: {

@@ -26,13 +26,13 @@ function SideCard({
     color,
     fav,
     createdAt,
-    updatedAt,
+    // updatedAt,
     // isSelected = false
 }: SideCardProps) {
 
     const navigate = useNavigate();
     createdAt = createdAt.slice(0, 10)
-    const updatedDate = updatedAt.slice(0, 10)
+    // const updatedDate = updatedAt.slice(0, 10)
     const [isSelected,setIsSelected] = useState(false)
     // Memoize HTML generation since it's expensive
     const html = useMemo(() => {
@@ -63,11 +63,7 @@ function SideCard({
             style={{ backgroundColor: color }}
             className={`group relative text-black p-5 h-58 rounded-2xl shadow-lg max-w-64 mx-auto cursor-pointer 
                      hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-out
-                     backdrop-blur-sm ${
-                         isSelected 
-                             ? 'border-4 border-blue-500 ring-2 ring-blue-200' 
-                             : 'border border-black/10'
-                     }`}
+                     backdrop-blur-sm border border-black/10`}
         >
             {/* Date - keeping original position */}
             <p className="text-xs text-gray-700 font-medium">

@@ -1,27 +1,51 @@
-import React, { useState, type FormEvent, type ChangeEvent } from 'react';
+import React, { useState,  type ChangeEvent } from 'react';
 import { motion, type Variants } from 'framer-motion'; // Import Variants type
-import { FaSignInAlt, FaEnvelope, FaLock } from 'react-icons/fa';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { FaSignInAlt,  FaLock } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+import { FaUser } from "react-icons/fa";
+import { FaTimes } from 'react-icons/fa';
+import { FaExclamationTriangle } from 'react-icons/fa';
+
+const API_URL = process.env.NODE_ENV === 'production' 
+  ? 'https://studyhelper-be-1.onrender.com'
+  : 'http://localhost:5000';
+
 // import Loader from '../components/loader';
 
 const LoginPage: React.FC = () => {
-  const [email, setEmail] = useState("")
+  const [username, setUserName] = useState("")
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("")
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
   // const [loading, setLoading] = useState(false); // Add this line
 
+  
+    const notificationVariants: Variants = {
+      hidden: { x: '100%', opacity: 0 },
+      visible: {
+        x: 0,
+        opacity: 1,
+        transition: { duration: 0.3, ease: "easeOut" }
+      },
+      exit: {
+        x: '100%',
+        opacity: 0,
+        transition: { duration: 0.3 }
+      }
+    };
+  console.log(message)
   const navigate = useNavigate()
   // Handles the form submission
   const handleLogin = async (e: any) => {
     e.preventDefault();
     // setLoading(true); // show loader
     try {
-      const response = await fetch("http://localhost:5000/api/authRoutes/login", {
+      const response = await fetch(`${API_URL}/api/authRoutes/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await response.json();
@@ -36,11 +60,16 @@ const LoginPage: React.FC = () => {
         navigate(`/home`);
       } else {
         setMessage(data.message || "Signin failed.");
+        setShowErrorNotification(true);
+        setTimeout(() => setShowErrorNotification(false), 5000);
       }
     } catch (error) {
       setMessage("An error occurred. Please try again.");
+      setShowErrorNotification(true);
+      setTimeout(() => setShowErrorNotification(false), 5000);
     } 
   };
+  const closeErrorNotification = () => setShowErrorNotification(false);
   // Framer Motion variants for the main form container
   const formVariants: Variants = { // Explicitly type as Variants
     hidden: { opacity: 0, y: 50 },
@@ -88,17 +117,17 @@ const LoginPage: React.FC = () => {
         <form onSubmit={handleLogin} className="space-y-6">
           {/* Email input field */}
           <motion.div variants={inputVariants}>
-            <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">Email Address</label>
+            <label htmlFor="email" className="block text-gray-700 text-sm font-medium mb-2">User Name</label>
             <div className="relative">
-              <FaEnvelope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
-                type="email"
-                id="email"
+                type="text"
+                id="user name"
                 className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-400 focus:border-transparent outline-none transition duration-200"
-                placeholder="you@example.com"
-                value={email}
+                placeholder="Enter  you user name"
+                value={username}
                 onChange={(e) => {
-                  setEmail(e.target.value)
+                  setUserName(e.target.value)
                 }}
                 required
               />
@@ -135,15 +164,7 @@ const LoginPage: React.FC = () => {
         </form>
 
         {/* Forgot password link */}
-        <motion.p
-          className="text-center text-gray-600 mt-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { delay: 0.8 } }}
-        >
-          <a href="/forgot-password" className="text-indigo-600 hover:text-indigo-800 font-semibold transition duration-200">
-            Forgot Password?
-          </a>
-        </motion.p>
+       
 
         {/* Sign up link */}
         <motion.p
@@ -156,10 +177,46 @@ const LoginPage: React.FC = () => {
             onClick={() => navigate("/signup")}
             className="text-indigo-600 hover:text-indigo-800 font-semibold transition duration-200 cursor-pointer"
           >
-            Log In
+            Sign Up
           </span>
         </motion.p>
       </motion.div>
+            {showErrorNotification && (
+              <div className="fixed top-4 right-4 z-50">
+                <motion.div
+                  className="bg-red-500 text-white rounded-lg shadow-lg p-4 w-80 max-w-sm relative overflow-hidden"
+                  variants={notificationVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <div className="flex items-start justify-between mb-2">
+                    <div className="flex items-center">
+                      <FaExclamationTriangle className="text-white text-lg mr-3 flex-shrink-0" />
+                      <div>
+                        <h4 className="font-semibold text-sm">Login Failed</h4>
+                        <p className="text-sm text-red-100 mt-1">{message}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={closeErrorNotification}
+                      className="text-red-200 hover:text-white transition duration-200 flex-shrink-0 ml-2"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                  <div className="absolute bottom-0 left-0 w-full h-1 bg-red-600">
+                    <motion.div
+                      className="h-full bg-red-300"
+                      initial={{ width: '100%' }}
+                      animate={{ width: '0%' }}
+                      transition={{ duration: 5, ease: "linear" }}
+                    />
+                  </div>
+                </motion.div>
+              </div>
+            )}
+      
     </div>
   );
 };

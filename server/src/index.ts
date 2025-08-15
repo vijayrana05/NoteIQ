@@ -10,21 +10,46 @@ import askAiRoutes from './routes/askAiRoutes'
 import queryNotesRoutes from './routes/queryNotes'
 
 dotenv.config();
+
 const app = express();
-app.use(cors());
+const PORT = parseInt(process.env.PORT || '5000', 10);
+
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    /^https:\/\/.*\.vercel\.app$/  // This matches any *.vercel.app domain
+  ],
+  credentials: true
+}));
 app.use(express.json());
+
+// Root route
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'StudyHelper API is running!',
+    status: 'success',
+    endpoints: {
+      auth: '/api/authRoutes',
+      notes: '/api/notesRoutes',
+      upload: '/api/uploadRoutes',
+      search: '/api/searchRoutes',
+      askAi: '/api/askAiRoutes',
+      queryNotes: '/api/queryNotesRoutes'
+    }
+  });
+});
 
 app.use('/api/authRoutes', authRoutes);
 app.use('/api/notesRoutes', notesRoutes);
-app.use('/api/uploadRoutes',uploadRoutes )
-app.use('/api/searchRoutes',searchRoutes )
-app.use('/api/askAiRoutes',askAiRoutes)
-app.use('/api/queryNotesRoutes',queryNotesRoutes)
-
+app.use('/api/uploadRoutes', uploadRoutes);
+app.use('/api/searchRoutes', searchRoutes);
+app.use('/api/askAiRoutes', askAiRoutes);
+app.use('/api/queryNotesRoutes', queryNotesRoutes);
 
 // Connect to DB and start server
 connectDB().then(() => {
-  app.listen(process.env.PORT, () => {
-    console.log(`🚀 Server running on port ${process.env.PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${PORT}`);
   });
 });
