@@ -37,8 +37,8 @@ NoteIQ is a full-stack AI-powered note-taking application. It allows users to cr
 
 1. **Clone the repository:**
    ```sh
-   git clone https://github.com/your-username/studyhelper.git
-   cd studyhelper
+   git clone https://github.com/your-username/NoteIQ.git
+   cd NoteIQ
    ```
 
 2. **Install dependencies:**
